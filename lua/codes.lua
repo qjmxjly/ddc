@@ -98,6 +98,13 @@ end
 返回值：无
 ]]
 
+local function carNotif()
+  -- 小车语音提示
+end
+
+local function carGo()
+  -- 开动小车
+end
 
 --[[
 函数名：rcvmessage
@@ -110,11 +117,12 @@ end
 ]]
 local function rcvmessagecb(topic,payload,qos)
   print("zzzzzzzzzzzzzzzzzz")
-  print(topic)
-  print(payload)
-  if(topic == subtopic and payload == "action")
-  then
+  if(topic == subtopic and payload == "action") then
+    carNotif()
+  elseif(topic == subtopic and payload == "ready") then
     pubStatusTopic()
+  elseif(topic == subtopic and payload == "go") then
+    carGo()
   end
   print("rcvmessagecb",topic,payload,qos)
 end
