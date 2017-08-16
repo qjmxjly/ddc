@@ -5,7 +5,7 @@ module(...,package.seeall)
 
 local ssub,schar,smatch,sbyte,slen = string.sub,string.char,string.match,string.byte,string.len
 --测试时请搭建自己的服务器
-local PROT,ADDR,PORT = "TCP","47.93.240.240",1884
+local PROT,ADDR,PORT = "TCP","47.93.240.240",1883
 local mqttclient
 local subtopic = "/ddc/"..city.."/"..ddcid
 
@@ -121,6 +121,7 @@ end
 
 local function connectedcb()
 	print("connectedcb")
+	print(subtopic)
 	--订阅主题
 	mqttclient:subscribe({{topic=subtopic,qos=1}}, subackcb, "subscribetest")
 	--注册事件的回调函数，MESSAGE事件表示收到了PUBLISH消息
@@ -130,7 +131,7 @@ local function connectedcb()
 	--发布一条qos为1的消息
 	--pubqos1test()
 	--20秒后主动断开MQTT连接
-	sys.timer_start(disconnect,20000)
+	--sys.timer_start(disconnect,60000)
 end
 
 --[[
