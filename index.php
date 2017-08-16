@@ -36,6 +36,8 @@ if($step == 1) {
 	$topics['/ddc/ningbo/10001/status'] = 0;
 
 	if($mqtt->connect()){
+		$mqtt->publish_sync("/ddc/ningbo/10001","ready",1,0);
+
 
 		class MySubscribeCallback extends MessageHandler
 		{
