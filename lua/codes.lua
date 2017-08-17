@@ -1,6 +1,8 @@
 require"misc"
 require"mqtt"
 require"common"
+require"pins"
+
 module(...,package.seeall)
 
 local ssub,schar,smatch,sbyte,slen = string.sub,string.char,string.match,string.byte,string.len
@@ -10,6 +12,9 @@ local mqttclient
 local subtopic = "/ddc/"..city.."/"..ddcid
 
 local pubtopic = "/ddc/"..city.."/"..ddcid.."/status"
+
+PIN1 = {pin=pio.P0_6,dir=pio.OUTPUT,valid=0}
+pins.reg(PIN1)
 
 
 --[[
@@ -104,7 +109,13 @@ end
 
 local function carGo()
   -- 开动小车
+  pins.set(true,pincfg.PIN1)
+  sys.timer_start（stopCar, 300000）
 end
+
+local function stopCar()
+  pins.set(false, pincfg.PIN1)
+end 
 
 --[[
 函数名：rcvmessage

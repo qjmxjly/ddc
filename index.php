@@ -1,7 +1,6 @@
 <?php
 require_once("./autoload.php");
-
-$mqtt_server = "47.93.240.240:1883";
+require_once("./config.php");
 
 
 use \sskaje\mqtt\MQTT;
@@ -198,7 +197,7 @@ if($step == 1) {
 			    	</div>
 			  	</div>
 			  	<div class="content-block">
-			    	<p><a href="#" class="button button-fill button-big">去支付 </a></p>
+			    	<p><a href="payok.php" class="button button-fill button-big">去支付 </a></p>
 
 			    </div>
 			    <div class="content-block">
