@@ -13,7 +13,7 @@ local subtopic = "/ddc/"..city.."/"..ddcid
 
 local pubtopic = "/ddc/"..city.."/"..ddcid.."/status"
 
-PIN1 = {pin=pio.P0_6,dir=pio.OUTPUT,valid=0}
+PIN1 = {pin=pio.P0_1,dir=pio.OUTPUT,valid=0}
 pins.reg(PIN1)
 
 
@@ -109,12 +109,12 @@ end
 
 local function carGo()
   -- 开动小车
-  pins.set(true,pincfg.PIN1)
-  sys.timer_start（stopCar, 300000）
+  pins.set(true,PIN1)
+  sys.timer_start(stopCar, 10000)
 end
 
-local function stopCar()
-  pins.set(false, pincfg.PIN1)
+function stopCar()
+  pins.set(false, PIN1)
 end 
 
 --[[
