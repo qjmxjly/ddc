@@ -2,6 +2,7 @@ require"misc"
 require"mqtt"
 require"common"
 require"pins"
+require"audio"
 
 module(...,package.seeall)
 
@@ -105,12 +106,13 @@ end
 
 local function carNotif()
   -- 小车语音提示
+    audio.play(1,"FILE","/ldata/1.mp3",audiocore.VOL7)
 end
 
 local function carGo()
   -- 开动小车
   pins.set(true,PIN1)
-  sys.timer_start(stopCar, 30000)
+  sys.timer_start(stopCar, 120000)
   print('start timer....................')
 end
 
