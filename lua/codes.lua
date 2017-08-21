@@ -13,7 +13,7 @@ local subtopic = "/ddc/"..city.."/"..ddcid
 
 local pubtopic = "/ddc/"..city.."/"..ddcid.."/status"
 
-PIN1 = {pin=pio.P0_1,dir=pio.OUTPUT,valid=0}
+PIN1 = {pin=pio.P0_1,dir=pio.OUTPUT,valid=1}
 pins.reg(PIN1)
 
 
@@ -39,9 +39,9 @@ local qos0cnt,qos1cnt = 1,1
 返回值：无
 ]]
 local function pubqos1testackcb(usertag,result)
-  print("pubqos1testackcb",usertag,result)
-  sys.timer_start(pubqos1test,20000)
-  qos1cnt = qos1cnt+1
+  --print("pubqos1testackcb",usertag,result)
+  --sys.timer_start(pubqos1test,20000)
+  --qos1cnt = qos1cnt+1
 end
 
 --[[
@@ -110,11 +110,13 @@ end
 local function carGo()
   -- 开动小车
   pins.set(true,PIN1)
-  sys.timer_start(stopCar, 10000)
+  sys.timer_start(stopCar, 30000)
+  print('start timer....................')
 end
 
 function stopCar()
   pins.set(false, PIN1)
+  print('stop timer................')
 end 
 
 --[[
