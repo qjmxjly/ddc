@@ -104,7 +104,7 @@ if($step == 1) {
 			  <div class="list-block media-list inset">
 			    <ul>
 			      <li>
-			        <a class="item-link item-content">
+			        <a class="item-link item-content" val="300000">
 			          <div class="item-media"><img src="https://gd4.alicdn.com/imgextra/i4/362352354/TB2F2XdmR4lpuFjy1zjXXcAKpXa_!!362352354.jpg_50x50.jpg" style='width: 2.2rem;'></div>
 			          <div class="item-inner">
 			            <div class="item-title-row">
@@ -121,7 +121,7 @@ if($step == 1) {
 			  <div class="list-block media-list inset">
 			    <ul>
 			      <li>
-			        <a  class="item-link item-content">
+			        <a  class="item-link item-content" val="600000">
 			          <div class="item-media"><img src="https://gd4.alicdn.com/imgextra/i4/362352354/TB2F2XdmR4lpuFjy1zjXXcAKpXa_!!362352354.jpg_50x50.jpg" style='width: 2.2rem;'></div>
 			          <div class="item-inner">
 			            <div class="item-title-row">
@@ -139,7 +139,7 @@ if($step == 1) {
 			  <div class="list-block media-list inset">
 			    <ul>
 			      <li>
-			        <a  class="item-link item-content">
+			        <a  class="item-link item-content" val="900000">
 			          <div class="item-media"><img src="https://gd4.alicdn.com/imgextra/i4/362352354/TB2F2XdmR4lpuFjy1zjXXcAKpXa_!!362352354.jpg_50x50.jpg" style='width: 2.2rem;'></div>
 			          <div class="item-inner">
 			            <div class="item-title-row">
@@ -147,6 +147,23 @@ if($step == 1) {
 			              <div class="item-after"><font color="red">70元</font></div>
 			            </div>
 			            <div class="item-subtitle">大约绕赛场6圈</div>
+			          </div>
+			        </a>
+			      </li>
+			    </ul>
+			  </div>
+
+			  <div class="list-block media-list inset">
+			    <ul>
+			      <li>
+			        <a  class="item-link item-content" val="0">
+			          <div class="item-media"><img src="https://gd4.alicdn.com/imgextra/i4/362352354/TB2F2XdmR4lpuFjy1zjXXcAKpXa_!!362352354.jpg_50x50.jpg" style='width: 2.2rem;'></div>
+			          <div class="item-inner">
+			            <div class="item-title-row">
+			              <div class="item-title">10小时</div>
+			              <div class="item-after"><font color="red"></font></div>
+			            </div>
+			            <div class="item-subtitle">充电模式</div>
 			          </div>
 			        </a>
 			      </li>
@@ -197,7 +214,7 @@ if($step == 1) {
 			    	</div>
 			  	</div>
 			  	<div class="content-block">
-			    	<p><a href="payok.php" class="button button-fill button-big">去支付 </a></p>
+			    	<p><a id="gopay" val="0" class="button button-fill button-big">去支付 </a></p>
 
 			    </div>
 			    <div class="content-block">
@@ -222,16 +239,20 @@ if($step == 1) {
     <script type="text/javascript">
 
     document.body.addEventListener('touchmove' , function(e){
-    e.preventDefault();
-})
+    	e.preventDefault();
+	})
+
+	$('#gopay').on('click', function() {
+		location.href="payok.php?time="+$(this).attr('val');
+	});
     	
     $(document).on('click','#page-first .list-block a', function () {
 	    $.showPreloader('请稍后，请求信息中');
-
-	    var params = {};
+	    var time = $(this).attr('val');
+	    var params = {time:time};
 
 	    var errCallback = function() {
-	    	$.toast("小车可能不能正常使用,请换一辆车或联系管理员。", 2000,'success');
+	    	$.toast("小车可能不能正常使用,请尝试换一辆。", 2000,'success');
 	    };
 
 	    $.ajax({
@@ -241,14 +262,15 @@ if($step == 1) {
 		    dataType: 'json',
 		    timeout: 7000,
 		    data: JSON.stringify(params),
-		    success: function(data) {
+		    success: function(dat) {
+		    	$('#gopay').attr('val', time);
 		        setTimeout(function() {
 					$.hidePreloader();
-			    	if(!data) errCallback();
+			    	if(!dat) errCallback();
 		        	$.router.load("#page-second");  //加载内联页面
 				}, 1000);
     		},
-    		error: function(data) {
+    		error: function(dat) {
     			setTimeout(function() {
 					$.hidePreloader();
     				errCallback();

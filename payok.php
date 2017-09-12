@@ -3,6 +3,9 @@ require_once("./autoload.php");
 require_once("./config.php");
 
 
+$time = intval($_REQUEST['time']);
+if(empty($time)) $time = 3600*10*1000;
+
 use \sskaje\mqtt\MQTT;
 use \sskaje\mqtt\MessageHandler;
 
@@ -20,7 +23,7 @@ if(empty($carId)) $carId = 10001;
 $city = 'ningbo';
 
 $mqtt->connect();
-$mqtt->publish_sync("/ddc/ningbo/10001","go",1,0);
+$mqtt->publish_sync("/ddc/ningbo/10001/go",$time,1,0);
 $mqtt->disconnect();
 
 ?>
