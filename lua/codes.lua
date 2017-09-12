@@ -1,3 +1,22 @@
+--[[
+线序定义：
+
+红5V
+
+黑GND
+
+绿TXD，接模块的H_RX
+
+白RXD，接模块的H_TX
+
+黄RTS，接模块的CTS
+
+蓝CTS，接模块的RTS
+
+一般硬件调试时不需要接硬件流控（RTS、CTS），只要接TX RX GND即可，5V接板子VUSB或5V脚（如果不接5V，用USB或电池供电也可以）。
+]]--
+
+
 require"misc"
 require"mqtt"
 require"common"
@@ -11,6 +30,7 @@ local ssub,schar,smatch,sbyte,slen = string.sub,string.char,string.match,string.
 local PROT,ADDR,PORT = "TCP","47.93.240.240",1883
 local mqttclient
 local subtopic = "/ddc/"..city.."/"..ddcid
+local gotopic = "/ddc/"..city.."/"..ddcid.."/go"
 
 local pubtopic = "/ddc/"..city.."/"..ddcid.."/status"
 
@@ -109,10 +129,13 @@ local function carNotif()
     audio.play(1,"FILE","/ldata/1.mp3",audiocore.VOL7)
 end
 
-local function carGo()
+local function carGo(go_time)
   -- 开动小车
+  if(not(go_time)) then
+    go_time = 120000
+  end
   pins.set(true,PIN1)
-  sys.timer_start(stopCar, 120000)
+  sys.timer_start(stopCar, go_time)
   print('start timer....................')
 end
 
@@ -136,8 +159,10 @@ local function rcvmessagecb(topic,payload,qos)
     carNotif()
   elseif(topic == subtopic and payload == "ready") then
     pubStatusTopic()
-  elseif(topic == subtopic and payload == "go") then
-    carGo()
+  elseif(topic == subtopic and payload == "close") then
+    stopCar()
+  elseif(topic == gotopic) then
+    carGo(payload)
   end
   print("rcvmessagecb",topic,payload,qos)
 end
